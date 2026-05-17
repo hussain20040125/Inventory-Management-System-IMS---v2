@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #F97316;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --animate-pulse-subtle: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-progress: progress 2s ease-in-out infinite;
+
+  @keyframes pulse-subtle {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.1);
+    }
+    50% {
+      box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.2);
+    }
+  }
+
+  @keyframes progress {
+    0% { transform: translateX(-100%) scaleX(0.3); }
+    50% { transform: translateX(0%) scaleX(2); }
+    100% { transform: translateX(100%) scaleX(0.3); }
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Enable class-based dark mode for Tailwind v4 */
+@variant dark (&:where(.dark, .dark *));
+
+.dark {
+  color-scheme: dark;
+}
+
+@layer base {
+  body {
+    @apply bg-white dark:bg-[#0F172A] text-gray-900 dark:text-gray-100;
+    scrollbar-gutter: stable;
+  }
+  
+  * {
+    @apply border-gray-200 dark:border-gray-800;
+  }
+
+  .approval-highlight {
+    @apply animate-pulse-subtle border-orange-200 dark:border-orange-900/50 bg-orange-50/30 dark:bg-orange-900/5;
+  }
+  
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 dark:bg-gray-700 rounded-full hover:bg-gray-400 dark:hover:bg-gray-600 transition-colors;
+  }
+
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.gray.300') transparent;
+  }
+
+  .dark * {
+    scrollbar-color: theme('colors.gray.700') transparent;
+  }
+
+  /* Table Sticky Fixes & Responsive Layout */
+  .virtuoso-table thead tr {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    @apply shadow-sm;
+  }
+
+  /* Remove horizontal scroll slider cleanly */
+  .no-scrollbar {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .no-scrollbar-lg {
+    @media (min-width: 1024px) {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+      &::-webkit-scrollbar {
+        display: none !important;
+      }
+    }
+  }
+
+  /* Prevent flicker in wide screen full screen transitions */
+  .max-w-7xl {
+    transition: max-width 0.3s ease-in-out;
+  }
+
+  /* Sticky table row for virtualized tables */
+  .sticky-th {
+    position: sticky;
+    top: 0;
+    z-index: 11;
+    @apply backdrop-blur-md bg-white/90 dark:bg-gray-900/90;
+  }
+}
